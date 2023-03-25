@@ -7,10 +7,10 @@ const ContactProvider = ({ children }) => {
   const [searchContact, setSearchContact] = useState("");
   const searchParams = new URLSearchParams(document.location.search);
 
-  const navigate = useNavigate();
+
 
   useEffect(() => {
-    console.log("searchParams", searchParams);
+    console.log("searchParams", searchParams.get("contact"));
   }, [searchParams]);
 
   return (
