@@ -1,15 +1,18 @@
 import { useState } from "react";
+import { getContactsList } from "../api";
 
 function SearchBar() {
   const [searchText, setSearchText] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [suggestions, setSuggestions] = useState(["fs", "sdf", "fsdf", "sdf"]);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = async(e) => {
     const inputText = e.target.value;
     setSearchText(inputText);
     setShowSuggestions(inputText.length > 0);
    //Here I need to call the api endpoints
+   let result = await getContactsList(inputText)
+   console.log(result )
   };
 
   return (

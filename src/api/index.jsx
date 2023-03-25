@@ -8,3 +8,12 @@ export const getProductList = async (page = 0) => {
     .get(`${import.meta.env.VITE_BASE_URL}/products/?&limit=25&offset=${page}`, config)
     .then((res) => res.data);
 };
+
+export const getContactsList = async (searchText = "") => {
+     const config = {
+       headers: { Authorization: `Token ${import.meta.env.VITE_AUTH_TOKEN}` },
+     };
+     return await axios
+       .get(`${import.meta.env.VITE_BASE_URL}/contacts/?search=${searchText}`, config)
+       .then((res) => res);
+   };
