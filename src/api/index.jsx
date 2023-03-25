@@ -15,5 +15,5 @@ export const getContactsList = async (searchText = "") => {
      };
      return await axios
        .get(`${import.meta.env.VITE_BASE_URL}/contacts/?search=${searchText}`, config)
-       .then((res) => res);
+       .then((res) => res.data);
    };
