@@ -4,24 +4,23 @@ import TableRow from "./TableRow";
 
 function ContactTable() {
   const { products, fetchStatus } = ContactState();
-  console.log("==========>", fetchStatus, products);
   
   return (
     <div>
       <table class="min-w-full table-auto">
         <thead class="justify-between">
-          <tr class="bg-gray-800">
+          <tr class="bg-gray-100">
             <th class="px-16 py-2">
-              <span class="text-gray-300">Product</span>
+              <span class="text-slate-900">Product</span>
             </th>
             <th class="px-16 py-2">
-              <span class="text-gray-300">SKU</span>
+              <span class="text-amber-800">SKU</span>
             </th>
             <th class="px-16 py-2">
-              <span class="text-gray-300">Name</span>
+              <span class="text-amber-800">Name</span>
             </th>
             <th class="px-16 py-2">
-              <span class="text-gray-300">Variant Name</span>
+              <span class="text-amber-800">Variant Name</span>
             </th>
           </tr>
         </thead>
