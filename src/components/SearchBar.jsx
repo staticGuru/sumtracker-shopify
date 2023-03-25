@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { getContactsList } from "../api";
+import { useDebounce } from "../hooks/useDebounce";
 
 function SearchBar() {
   const [searchText, setSearchText] = useState("");
+  const debouncedSearch = useDebounce(searchText, 500);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [suggestions, setSuggestions] = useState(["fs", "sdf", "fsdf", "sdf"]);
 
