@@ -1,15 +1,13 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Fragment, useState } from "react";
+import "./App.css";
+import ContactTable from "./components/ContactTable";
 
 function App() {
-
   return (
-    <h1 className="text-3xl font-bold">
-      Hello world!
-    </h1>
-  )
+    <Fragment>
+      <ContactTable />
+    </Fragment>
+  );
 }
 
-export default App
+export default App;
