@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import { getProductList } from "../api";
 
 const ContactContext = createContext(null);
 
@@ -11,6 +12,7 @@ const ContactProvider = ({ children }) => {
 
   useEffect(() => {
     console.log("searchParams", searchParams.get("contact"));
+    getProductList()
   }, [searchParams]);
 
   return (
