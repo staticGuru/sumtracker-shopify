@@ -10,6 +10,7 @@ const ContactProvider = ({ children }) => {
   const [searchContact, setSearchContact] = useState("");
   const [page, setPage] = React.useState(1);
   const searchParams = new URLSearchParams(document.location.search);
+  console.log("searchParams",searchParams.get("contact"))
   const [contact, setContact] = useState(searchParams.get("contact"));
   const {
     status: fetchStatus,
@@ -19,7 +20,7 @@ const ContactProvider = ({ children }) => {
     isPreviousData,
   } = useQuery({
     queryKey: ["product", contact, page],
-    queryFn: () => getProductList(page),
+    queryFn: () => getProductList(page,contact),
     keepPreviousData: true,
     staleTime: 5000,
   });
@@ -28,10 +29,10 @@ const ContactProvider = ({ children }) => {
     if (!isPreviousData && products?.hasMore) {
       queryClient.prefetchQuery({
         queryKey: ["product", contact, page*25],
-        queryFn: () => getProductList(page*25),
+        queryFn: () => getProductList(page*25,contact),
       });
     }
-  }, [searchParams, products, isPreviousData, page, queryClient]);
+  }, [contact, products, isPreviousData, page, queryClient]);
 
   return (
     <ContactContext.Provider
