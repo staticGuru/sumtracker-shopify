@@ -1,11 +1,11 @@
 import { Fragment, useState } from "react";
 import "./App.css";
-import ContactTable from "./components/ContactTable";
+import ProductList from "./page/ProductList";
 
 function App() {
   return (
     <Fragment>
-      <ContactTable />
+     <ProductList/>
     </Fragment>
   );
 }
