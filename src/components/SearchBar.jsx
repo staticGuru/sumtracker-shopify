@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { getContactsList } from "../api";
 import { useDebounce } from "../hooks/useDebounce";
@@ -6,17 +7,46 @@ function SearchBar() {
   const [searchText, setSearchText] = useState("");
   const debouncedSearch = useDebounce(searchText, 500);
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [suggestions, setSuggestions] = useState(["fs", "sdf", "fsdf", "sdf"]);
-
-  const handleInputChange = async(e) => {
+  //   const [suggestions, setSuggestions] = useState(["fs", "sdf", "fsdf", "sdf"]);
+  const { data: suggestions, isLoading } = useQuery({
+    queryKey: ["contacts", debouncedSearch],
+    queryFn: async () => await getContactsList(debouncedSearch),
+    enabled: debouncedSearch !== "",
+  });
+  const handleInputChange = async (e) => {
     const inputText = e.target.value;
     setSearchText(inputText);
     setShowSuggestions(inputText.length > 0);
-   //Here I need to call the api endpoints
-   let result = await getContactsList(inputText)
-   console.log(result )
+    //Here I need to call the api endpoints
+    //     let result = await getContactsList(inputText);
+    //     console.log(result);
   };
+  const selectContact = (suggestion) => {
+    setSearchText(suggestion.company_name);
+    setShowSuggestions(false);
+    console.log("sleecteddd======>");
+    let searchParams = new URLSearchParams(window.location.search);
 
+    searchParams.set("contact", suggestion.id);
+
+    if (window.history.replaceState) {
+      const url =
+        window.location.protocol +
+        "//" +
+        window.location.host +
+        window.location.pathname +
+        "?" +
+        searchParams.toString();
+        console.log("url======>",url);
+      window.history.replaceState(
+        {
+          path: url,
+        },
+        "",
+        url
+      );
+    }
+  };
   return (
     <div className="relative">
       <div class="relative w-1/4">
@@ -37,7 +67,7 @@ function SearchBar() {
         </div>
         <input
           type="text"
-          id="simple-search"
+          id="Search by Name/SKU"
           value={searchText}
           onChange={handleInputChange}
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -47,19 +77,20 @@ function SearchBar() {
 
       {showSuggestions && (
         <div className="absolute z-10 mt-1 w-1/4 bg-white rounded-md shadow-lg">
-          {suggestions.map((suggestion) => (
-            <div
-              key={suggestion}
-              className="px-4 py-2 text-sm text-gray-900 cursor-pointer hover:bg-gray-100"
-              onClick={() => {
-                setSearchText(suggestion);
-                setShowSuggestions(false);
-                // Call your search function with the selected suggestion
-              }}
-            >
-              {suggestion}
-            </div>
-          ))}
+          {isLoading
+            ? "Loading..."
+            : suggestions.results.map((suggestion, index) => (
+                <div
+                  key={index}
+                  className="px-4 py-2 text-sm text-gray-900 cursor-pointer hover:bg-gray-100"
+                  onClick={() => {
+                    selectContact(suggestion);
+                    // Call your search function with the selected suggestion
+                  }}
+                >
+                  {suggestion.company_name}
+                </div>
+              ))}
         </div>
       )}
     </div>
