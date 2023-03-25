@@ -12,7 +12,7 @@ function TableRow({id,sku,variant_name,name,image_url}) {
         />
       </td>
       <td>
-        <span class="text-center ml-2 font-semibold">Ab-fsd-ersd</span>
+        <span class="text-center ml-2 font-semibold">{id}</span>
       </td>
       <td class="px-16 py-2">
         <span>Product Name</span>

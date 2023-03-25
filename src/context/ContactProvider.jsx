@@ -8,10 +8,16 @@ const ContactContext = createContext(null);
 const ContactProvider = ({ children }) => {
   const queryClient = useQueryClient();
   const [searchContact, setSearchContact] = useState("");
-  const [page, setPage] = React.useState(0);
+  const [page, setPage] = React.useState(1);
   const searchParams = new URLSearchParams(document.location.search);
   const [contact, setContact] = useState(searchParams.get("contact"));
-  const { status:fetchStatus, data:products, error, isFetching, isPreviousData } = useQuery({
+  const {
+    status: fetchStatus,
+    data: products,
+    error,
+    isFetching,
+    isPreviousData,
+  } = useQuery({
     queryKey: ["product", contact, page],
     queryFn: () => getProductList(page),
     keepPreviousData: true,
@@ -21,8 +27,8 @@ const ContactProvider = ({ children }) => {
   useEffect(() => {
     if (!isPreviousData && products?.hasMore) {
       queryClient.prefetchQuery({
-        queryKey: ["product", contact, page + 25],
-        queryFn: () => getProductList(page + 25),
+        queryKey: ["product", contact, page*25],
+        queryFn: () => getProductList(page*25),
       });
     }
   }, [searchParams, products, isPreviousData, page, queryClient]);
@@ -32,10 +38,12 @@ const ContactProvider = ({ children }) => {
       value={{
         searchContact,
         setSearchContact,
-        contact, setContact,
-        page, setPage,
+        contact,
+        setContact,
+        page,
+        setPage,
         products,
-        fetchStatus
+        fetchStatus,
       }}
     >
       {children}

@@ -5,7 +5,7 @@ import TableRow from "./TableRow";
 function ContactTable() {
   const { products, fetchStatus } = ContactState();
   console.log("==========>", fetchStatus, products);
-  if (fetchStatus == "loading") return "Loading...";
+  
   return (
     <div>
       <table class="min-w-full table-auto">
