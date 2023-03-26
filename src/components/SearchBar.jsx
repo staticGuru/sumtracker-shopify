@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getContactsList } from "../api";
 import { ContactState } from "../context/ContactProvider";
 import { useDebounce } from "../hooks/useDebounce";
 
 function SearchBar() {
-  const { setContact, setPage,contact} = ContactState();
-  const [searchText, setSearchText] = useState(contact||"");
+  const { setContact, setPage, contact } = ContactState();
+  const [searchText, setSearchText] = useState("");
   const debouncedSearch = useDebounce(searchText, 500);
   const [showSuggestions, setShowSuggestions] = useState(false);
 
@@ -15,6 +15,9 @@ function SearchBar() {
     queryFn: async () => await getContactsList(debouncedSearch),
     enabled: debouncedSearch !== "",
   });
+  useEffect(() => {
+    if (!contact) setSearchText("");
+  }, [contact]);
   const handleInputChange = async (e) => {
     const inputText = e.target.value;
     setSearchText(inputText);
